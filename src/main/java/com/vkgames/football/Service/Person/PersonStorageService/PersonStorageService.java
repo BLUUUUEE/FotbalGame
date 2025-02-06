@@ -4,14 +4,18 @@ import com.vkgames.football.Entity.Person.Person;
 import com.vkgames.football.Role.Role;
 import org.bson.types.ObjectId;
 
-public interface  PersonStorageService {
+import java.util.List;
+
+public interface PersonStorageService {
     void savePerson(Person person);
 
     Person findPerson(ObjectId id);
 
     void deletePerson(ObjectId id);
 
+    Person findPersonByNameAndRole(String name);
 
+    List<Person> getAll(Role role);
 
 
 }

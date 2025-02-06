@@ -1,26 +1,25 @@
-package com.vkgames.football.Entity.Team;
-
+package com.vkgames.football.Dto.TeamDto;
 
 import com.vkgames.football.Dto.PersonDto.TeamPlayerDto;
 import com.vkgames.football.Entity.Person.PersonImpl.Coach;
 import com.vkgames.football.Entity.Person.PersonImpl.Player;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Data
-@Document(collection = "Team")
-public class Team {
-    @Id
+@AllArgsConstructor
+@NoArgsConstructor
+public class TeamRequestDto {
     private ObjectId id;
     private String teamName;
     private String coachName;
     private List<TeamPlayerDto> teamPlayers;
     private String formation;
-    private long matchesWon=0;
-    private long matchesLost=0;
-    private long matchesDraw=0;
+    private long matchesWon;
+    private long matchesLost;
+    private long matchesDraw;
 }

@@ -14,8 +14,8 @@ public class RefereeUpdateService implements PersonUpdateService {
         Referee newRef = (Referee) oldPerson;
         Referee oldRef = (Referee) newPerson;
 
-        oldRef.setName(newRef.getName()!=null? newRef.getName() : oldRef.getName() );
-        oldRef.setAge(Math.max(oldRef.getAge(),newRef.getAge()));
+        oldRef.setName(newRef.getName() != null ? newRef.getName() : oldRef.getName());
+        oldRef.setAge(Math.max(oldRef.getAge(), newRef.getAge()));
 
         System.out.println("referee updated!!");
         return (Person) oldRef;

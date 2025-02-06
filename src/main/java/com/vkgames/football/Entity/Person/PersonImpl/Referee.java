@@ -14,10 +14,10 @@ public class Referee implements Person {
     private ObjectId id;
     private String name;
     private long age;
-//    private String team=null;
+    //    private String team=null;
 //    private String position=null;
 //    private  long jerseyNumber=0;
-    private Role role=Role.REFEREE;
+    private Role role = Role.REFEREE;
 
     @Override
     public Role getRole() {
