@@ -1,9 +1,12 @@
 package com.vkgames.football.Controller;
 
-import com.vkgames.football.Dto.TeamDto.TeamRequestDto;
-import com.vkgames.football.Dto.TeamDto.TeamResponseDto;
-import com.vkgames.football.Entity.Team.Team;
-import com.vkgames.football.Service.Team.TeamService;
+import com.vkgames.football.Elastic.EEntity.ETeam.ETeam;
+import com.vkgames.football.Elastic.EService.EStats.EStatsServiceImpl.ETeamStatsService;
+import com.vkgames.football.Elastic.EService.ETeam.ETeamService;
+import com.vkgames.football.Mongo.Dto.TeamDto.TeamRequestDto;
+import com.vkgames.football.Mongo.Dto.TeamDto.TeamResponseDto;
+import com.vkgames.football.Mongo.Entity.Team.Team;
+import com.vkgames.football.Mongo.Service.Team.TeamService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +18,15 @@ import org.springframework.web.bind.annotation.*;
 public class TeamController {
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private ETeamService eTeamService;
 
     @PostMapping
     ResponseEntity<?> createTeam(@RequestBody TeamRequestDto teamRequestDto) {
-        Team team = teamService.createTeam(teamRequestDto);
-        if (team != null) {
-            return new ResponseEntity<>(team, HttpStatus.CREATED);
+         teamService.createTeam(teamRequestDto);
+        ETeam eTeam = eTeamService.createETeam(teamRequestDto);
+        if (eTeam != null) {
+            return new ResponseEntity<>(eTeam, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -28,9 +34,9 @@ public class TeamController {
 
     @GetMapping("id/{id}")
     ResponseEntity<?> getTeamById(@PathVariable ObjectId id) {
-        TeamResponseDto teamResponseDto = teamService.getTeamById(id);
-        if (teamResponseDto != null) {
-            return new ResponseEntity<>(teamResponseDto, HttpStatus.OK);
+        ETeam eTeam = eTeamService.getTeamById(id.toString());
+        if (eTeam != null) {
+            return new ResponseEntity<>(eTeam, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -38,9 +44,9 @@ public class TeamController {
 
     @GetMapping("/{teamName}")
     ResponseEntity<?> getTeamByTeamName(@PathVariable String teamName) {
-        Team team = teamService.getTeamByTeamName(teamName);
-        if (team != null) {
-            return new ResponseEntity<>(team, HttpStatus.OK);
+        ETeam eTeam = eTeamService.getETeamByTeamName(teamName);
+        if (eTeam != null) {
+            return new ResponseEntity<>(eTeam, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -48,9 +54,10 @@ public class TeamController {
 
     @PutMapping("id/{id}")
     ResponseEntity<?> updateTeamById(@PathVariable ObjectId id, @RequestBody TeamRequestDto teamRequestDto) {
-        Team team = teamService.updateTeam(id, teamRequestDto);
-        if (team != null) {
-            return new ResponseEntity<>(team, HttpStatus.CREATED);
+        teamService.updateTeam(id, teamRequestDto);
+        ETeam eTeam = eTeamService.updateETeam(id.toString(),teamRequestDto);
+        if (eTeam != null) {
+            return new ResponseEntity<>(eTeam, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -61,6 +68,7 @@ public class TeamController {
     @DeleteMapping("id/{id}")
     ResponseEntity<?> deleteTeamById(@PathVariable ObjectId id) {
         teamService.deleteTeam(id);
+        eTeamService.deleteETeam(id.toString());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

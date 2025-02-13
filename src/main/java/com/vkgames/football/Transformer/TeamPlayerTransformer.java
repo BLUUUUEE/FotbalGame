@@ -1,7 +1,7 @@
 package com.vkgames.football.Transformer;
 
-import com.vkgames.football.Dto.PersonDto.TeamPlayerDto;
-import com.vkgames.football.Entity.Person.PersonImpl.Player;
+import com.vkgames.football.Mongo.Dto.PersonDto.TeamPlayerDto;
+import com.vkgames.football.Mongo.Entity.Person.PersonImpl.Player;
 
 public class TeamPlayerTransformer {
 

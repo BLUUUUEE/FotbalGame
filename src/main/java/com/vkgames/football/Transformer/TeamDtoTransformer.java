@@ -1,9 +1,10 @@
 package com.vkgames.football.Transformer;
 
-import com.vkgames.football.Dto.PersonDto.TeamPlayerDto;
-import com.vkgames.football.Dto.TeamDto.TeamRequestDto;
-import com.vkgames.football.Dto.TeamDto.TeamResponseDto;
-import com.vkgames.football.Entity.Team.Team;
+import com.vkgames.football.Elastic.EEntity.ETeam.ETeam;
+import com.vkgames.football.Mongo.Dto.PersonDto.TeamPlayerDto;
+import com.vkgames.football.Mongo.Dto.TeamDto.TeamRequestDto;
+import com.vkgames.football.Mongo.Dto.TeamDto.TeamResponseDto;
+import com.vkgames.football.Mongo.Entity.Team.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,19 @@ public class TeamDtoTransformer {
         team.setMatchesLost(teamRequestDto.getMatchesLost());
 
         return team;
+    }
+
+    public static ETeam teamDtoToETeam(TeamRequestDto teamRequestDto){
+        ETeam eTeam = new ETeam();
+        eTeam.setTeamName(teamRequestDto.getTeamName());
+        eTeam.setCoachName(teamRequestDto.getCoachName());
+        eTeam.setTeamPlayers(teamRequestDto.getTeamPlayers());
+        eTeam.setFormation(teamRequestDto.getFormation());
+        eTeam.setMatchesDraw(teamRequestDto.getMatchesDraw());
+        eTeam.setMatchesLost(teamRequestDto.getMatchesLost());
+        eTeam.setMatchesWon(teamRequestDto.getMatchesWon());
+
+        return eTeam;
     }
 
     public static TeamResponseDto teamToTeamDto(Team team) {

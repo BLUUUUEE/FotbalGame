@@ -1,8 +1,10 @@
 package com.vkgames.football.Controller;
-import com.vkgames.football.Dto.MatchDto.MatchRequestDto;
-import com.vkgames.football.Dto.MatchDto.MatchResponseDto;
-import com.vkgames.football.Entity.Match.Match;
-import com.vkgames.football.Service.Match.MatchService;
+import com.vkgames.football.Elastic.EEntity.EMatch.EMatch;
+import com.vkgames.football.Elastic.EService.EMatch.EMatchService;
+import com.vkgames.football.Mongo.Dto.MatchDto.MatchRequestDto;
+import com.vkgames.football.Mongo.Dto.MatchDto.MatchResponseDto;
+import com.vkgames.football.Mongo.Entity.Match.Match;
+import com.vkgames.football.Mongo.Service.Match.MatchService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,15 @@ public class MatchController {
 
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private EMatchService eMatchService;
 
     @PostMapping
     public ResponseEntity<?> createMatch(@RequestBody MatchRequestDto matchRequestDto) {
-        Match match = matchService.createMatch(matchRequestDto);
-        if (match != null) {
-            return new ResponseEntity<>(match, HttpStatus.OK);
+         matchService.createMatch(matchRequestDto);
+         EMatch eMatch = eMatchService.createEMatch(matchRequestDto);
+        if (eMatch != null) {
+            return new ResponseEntity<>(eMatch, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -28,11 +33,13 @@ public class MatchController {
 
     @GetMapping("/id/{matchId}")
     public ResponseEntity<?> getMatchById(@PathVariable ObjectId matchId) {
-        MatchResponseDto matchResponseDto = matchService.getMatchById(matchId);
-        if (matchResponseDto != null) {
-            return new ResponseEntity<>(matchResponseDto, HttpStatus.FOUND);
+        EMatch eMatch = eMatchService.getMatchById(matchId.toString());
+        if (eMatch != null) {
+            return new ResponseEntity<>(eMatch, HttpStatus.FOUND);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 }
