@@ -6,8 +6,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableMongoRepositories(basePackages = "com.vkgames.football.Mongo.Repository")
-@EnableElasticsearchRepositories(basePackages = "com.vkgames.football.Elasticsearch.Repository")
+@EnableMongoRepositories(basePackages = "com.vkgames.football.mongo.repository")
+@EnableElasticsearchRepositories(basePackages = "com.vkgames.football.Elasticsearch.repository")
 public class FootballApplication {
 
     public static void main(String[] args) {
