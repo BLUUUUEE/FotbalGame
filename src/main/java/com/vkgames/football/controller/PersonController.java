@@ -2,7 +2,6 @@ package com.vkgames.football.controller;
 
 import com.vkgames.football.elastic.entity.EPerson;
 import com.vkgames.football.elastic.entity.personImpl.EPlayer;
-import com.vkgames.football.elastic.entity.stats.statsImpl.EPlayerStats;
 import com.vkgames.football.elastic.service.person.EPersonService;
 import com.vkgames.football.mongo.dto.personDto.PersonRequestDto;
 import com.vkgames.football.mongo.entity.person.Person;
@@ -85,12 +84,13 @@ public class PersonController {
         }
 
     }
+
     @GetMapping("players/{teamName}")
-    public ResponseEntity<?> getAllPlayersOfTeam(@PathVariable String teamName){
+    public ResponseEntity<?> getAllPlayersOfTeam(@PathVariable String teamName) {
         List<EPlayer> ePlayers = ePersonService.getAllPlayersOfTeam(teamName);
-        if(!ePlayers.isEmpty()){
-            return new ResponseEntity<>(ePlayers,HttpStatus.OK);
-        }else{
+        if (!ePlayers.isEmpty()) {
+            return new ResponseEntity<>(ePlayers, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

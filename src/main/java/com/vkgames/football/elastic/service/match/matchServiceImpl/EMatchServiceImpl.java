@@ -53,7 +53,13 @@ public class EMatchServiceImpl implements EMatchService {
         return matches;
     }
 
+    @Override
+    public EMatch saveEMatch(MatchRequestDto matchRequestDto,String id) {
+        EMatch eMatch = MatchDtoTransformer.matchRequestDtoToEMatch(matchRequestDto,id);
+       EMatch savedEMatch = eMatchRepository.save(eMatch);
+       return savedEMatch;
 
+    }
 
 
 }

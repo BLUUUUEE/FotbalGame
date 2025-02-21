@@ -9,4 +9,6 @@ public interface MatchService {
 
     MatchResponseDto getMatchById(String matchId);
 
+    Match saveMatch(MatchRequestDto matchRequestDto);
+
 }

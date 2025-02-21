@@ -45,4 +45,11 @@ public class MatchServiceImpl implements MatchService {
         }
 
     }
+
+    @Override
+    public Match saveMatch(MatchRequestDto matchRequestDto) {
+        Match match = MatchDtoTransformer.matchRequestDtoToMatch(matchRequestDto);
+       Match savedMatch = matchRepository.save(match);
+       return savedMatch;
+    }
 }

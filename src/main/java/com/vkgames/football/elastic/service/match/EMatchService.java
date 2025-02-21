@@ -15,4 +15,6 @@ public interface EMatchService {
     void saveEMatch(EMatch eMatch);
 
     List<EMatch> getMatchByGoals(Integer goals);
+
+    EMatch saveEMatch(MatchRequestDto matchRequestDto,String id);
 }

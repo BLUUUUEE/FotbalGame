@@ -20,6 +20,8 @@ repositories {
 dependencies {
     // Spring Boot Web Starter
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
 
     // Spring Data MongoDB Starter
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'

@@ -2,6 +2,7 @@ package com.vkgames.football.controller;
 
 import com.vkgames.football.elastic.entity.match.EMatch;
 import com.vkgames.football.elastic.service.match.EMatchService;
+import com.vkgames.football.kafka.KafkaProducerService;
 import com.vkgames.football.mongo.dto.matchDto.MatchRequestDto;
 import com.vkgames.football.mongo.entity.match.Match;
 import com.vkgames.football.mongo.service.match.MatchService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/match")
@@ -20,14 +22,17 @@ public class MatchController {
     private MatchService matchService;
     @Autowired
     private EMatchService eMatchService;
+    @Autowired
+    private KafkaProducerService kafkaProducerService;
 
     @PostMapping
     public ResponseEntity<?> createMatch(@RequestBody MatchRequestDto matchRequestDto) {
-        Match match = matchService.createMatch(matchRequestDto);
-        EMatch eMatch = eMatchService.createEMatch(matchRequestDto, match.getMatchId());
 
+        Match match = matchService.saveMatch(matchRequestDto);
+        EMatch eMatch = eMatchService.saveEMatch(matchRequestDto, match.getMatchId());
+        CompletableFuture.runAsync(() -> kafkaProducerService.publishMatchEvent(match));
         System.out.println(eMatch);
-        eMatchService.saveEMatch(eMatch);
+
         if (eMatch != null) {
             return new ResponseEntity<>(eMatch, HttpStatus.OK);
         } else {
@@ -58,9 +63,9 @@ public class MatchController {
     @GetMapping("/score/{substring}")
     public ResponseEntity<?> getMatchesGoalsMoreThan(@PathVariable Integer goals) {
         List<EMatch> eMatches = eMatchService.getMatchByGoals(goals);
-        if(!eMatches.isEmpty()){
-            return new ResponseEntity<>(eMatches,HttpStatus.OK);
-        }else{
+        if (!eMatches.isEmpty()) {
+            return new ResponseEntity<>(eMatches, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
